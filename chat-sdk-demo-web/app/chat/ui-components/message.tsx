@@ -25,12 +25,14 @@ export default function Message ({
   message,
   currentUserId,
   isOnline = -1,
-  showUserMessage = (a, b, c, d) => {}
+  showUserMessage = (a, b, c, d) => {},
+  openAIModeration
 }) {
   const [showToolTip, setShowToolTip] = useState(false)
   const [actionsShown, setActionsShown] = useState(false)
   let messageHovered = false
   let actionsHovered = false
+  const [showHarmfulMessage, setShowHarmfulMessage] = useState(false)
 
   const handleMessageMouseEnter = e => {
     messageHovered = true
@@ -304,15 +306,16 @@ export default function Message ({
               )}
               {/* Will chase with the chat team to see why I need these conditions (get an error about missing 'type' if they are absent) */}
               <div className='flex flex-row items-center w-full flex-wrap'>
-                {(message.content.text ||
+                {(!message.content.openAiModeration || !message.content.openAiModeration?.results[0].flagged || showHarmfulMessage) && ((message.content.text ||
                   message.content.plainLink ||
                   message.content.textLink ||
                   message.content.mention ||
                   message.content.channelReference) &&
                   message
                     .getMessageElements()
-                    .map((msgPart, index) => renderMessagePart(msgPart, index))}
+                    .map((msgPart, index) => renderMessagePart(msgPart, index)))}
                 {message.actions && message.actions.edited && <span className="text-navy500">&nbsp;&nbsp;(edited)</span>}
+                {!showHarmfulMessage && message.content.openAiModeration?.results[0].flagged && <span>Message contains potentially harmful content <span className="text-blue-400 cursor-pointer" onClick={() => {setShowHarmfulMessage(true)}}>(Reveal)</span></span>}
               </div>
             </div>
             {!received && showReadIndicator && (
