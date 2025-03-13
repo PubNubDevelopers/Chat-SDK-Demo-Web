@@ -12,7 +12,7 @@ This application is written with NextJS, so be sure to have a copy of [Node.js 1
 
 To run this project yourself you will need a PubNub account
 
-<a href="https://admin.pubnub.com/signup">
+<a href="https://admin.pubnub.com">
 	<img alt="PubNub Signup" src="https://i.imgur.com/og5DDjf.png" width=260 height=97/>
 </a>
 
