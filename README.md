@@ -554,7 +554,7 @@ This application does not demonstrate how to moderate chat, but it does show how
 
 ```typescript
 const removeModerationListener = chat.listenForEvents({
-    channel: chat.currentUser.id,
+    channel: `PUBNUB_INTERNAL_MODERATION.${chat.currentUser.id}`,
     type: 'moderation',
     callback: async evt => {
     let moderationMessage = ''
